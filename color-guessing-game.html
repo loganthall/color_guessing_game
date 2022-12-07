@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Guessing Game</title>
+
+    <!-- Calling in a Google Font API -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Courgette&display=swap" />
+
+    <!-- CSS Styling -->
+    <style rel="stylesheet">
+        h1 {
+            font-family: 'Courgette', Verdana, sans-serif;
+            display: grid;
+            margin: auto;
+            place-content: center;
+        }
+
+        button {
+            font-family: 'Courgette', Verdana, sans-serif;
+            display: grid;
+            margin: auto;
+            place-content: center;
+            color: white;
+            background-color: black;
+            scale: 200%;
+        }
+
+        button:hover {
+            background-color: crimson;
+            border-color: crimson;
+            color: black;
+        }
+
+        body {
+            background: linear-gradient(to right, blue, green, purple);
+        }
+    </style>
+</head>
+<body>
+    <br>
+    <br>
+    <!-- Name of Page -->
+    <h1>Color Guessing Game</h1>
+    <br>
+    <br>
+
+    <!-- Clickable button that starts the game -->
+    <button type="button" onclick="runGame()">Start Game</button>
+
+    <!-- Scripting area -->
+    <script>
+        //Declaring/Initializing variables
+        const COLORS_ARRAY = ["blue", "yellow", "cyan", "gray", "green", "magenta", "orange", "gold", "red", "white"];
+
+        //Onclick game begin function
+        function runGame() {
+
+            //Variable initializations
+            let guess = " ";
+            let correct = false;
+            let numTries = 0;
+            let arraySorted = COLORS_ARRAY.sort(); //Sorts the array COLORS_ARRAY into alphabetical order
+            const targetIndex = Math.floor((Math.random() * COLORS_ARRAY.length) - 1);
+            const target = COLORS_ARRAY[targetIndex];
+
+
+            //Console output for debugging
+            console.log(targetIndex);
+            console.log(target);
+
+            //Provide colors and ask for the user's choice, and loop until correct is true
+            do {
+                guess = prompt("I am thinking of one of these colors:\n\n" + arraySorted.join(", ") + "\n\nWhat color am I thinking of?\n"); //.join() method to sort array values by lexicographical order
+                if (guess === null) {
+                    alert("Thank you for playing.");
+                    return;
+                }
+                guess = guess.toLowerCase(); //Converts all input to lower case
+                numTries += 1; //Increment the number of tries by one for each loop ran
+
+                //Pass generated arguments to the checkGuess() function
+                correct = checkGuess(guess, target, numTries);
+            } while (!correct);
+
+            //Alert the user that they have guessed correctly
+            alert("CONGRATULATIONS! You have guessed the color!\n\nIt took you " + numTries + " guess(es) to finish the game!\n\nHit OK to see the color in the background.");
+            document.body.style.background = guess;
+        }
+        //Function to check the users guess against the randomly generated target
+        function checkGuess(guess, target, numTries) {
+
+            //Initialize variables
+            let correct = false;
+
+            //Check to see if the guess exists in the array at all
+            if (!(COLORS_ARRAY.includes(guess))) {
+                alert("Sorry, I don't recognize your color.\n\nPlease try again.\n\nCurrent number of tries: " + numTries)
+
+            //Check to see if the guess is lexicographically higher than the target
+            } else if (guess > target) {
+                alert("Sorry, your guess is incorrect.\n\nHint: your color is alphabetically higher than mine.\n\nPlease try again.\n\nCurrent number of tries: " + numTries);
+
+            //Check to see if the guess is lexicographically lower than the target
+            } else if (guess < target) {
+                alert("Sorry, your guess is incorrect.\n\nHint: your color is alphabetically lower than mine.\n\nPlease try again.\n\nCurrent number of tries: " + numTries);
+
+            //The guess should be true at this point
+            } else {
+                correct = true;
+            }
+            return correct;
+        }
+    </script>
+</body>
+</html>
